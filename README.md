@@ -13,3 +13,7 @@ NIN_test4.py: Using AveragePooling without dense layer , error = 25.43%
 NIN_test5.py: Using AveragePooling with dense layer, error = 21.20%
 NIN_test6.py: remove one 1 * 1 layer, error = 23.07%  
 
+# VGG_demo  
+vgg_test1.py: adjusted vgg13, failed to converge  
+vgg_test2.py: fixed the bug, reduce learning rate, error = 13.63%  
+

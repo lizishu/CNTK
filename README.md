@@ -16,4 +16,7 @@ NIN_test6.py: remove one 1 * 1 layer, error = 23.07%
 # VGG_demo  
 vgg_test1.py: adjusted vgg13, failed to converge  
 vgg_test2.py: fixed the bug, reduce learning rate, error = 13.63%  
-
+vgg_test3.py: adjusted vgg16, max_epoch = 40  
+*   with bathnormalization, error = 12.87% 
+*   without batchnormalization, error = 27.93% 
+              

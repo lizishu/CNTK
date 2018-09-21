@@ -20,4 +20,5 @@ vgg_test3.py: adjusted vgg16
 *   max_epoch = 40, with bathnormalization, error = 12.87% 
 *   max_epoch = 40, without batchnormalization, error = 27.93% 
 *   max_epoch = 80, with batchnormalization, error = 8.83%  
+vgg_test4.py: adjusted vgg19, error = 8.48%  
               

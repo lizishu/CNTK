@@ -1,4 +1,4 @@
-# UPD 2018.9.22 net
+# UPD 2018.9.26 net
 from cntk.initializer import he_normal
 from cntk.layers import AveragePooling, MaxPooling, BatchNormalization, Convolution, Dense
 from cntk.ops import element_times, relu, splice

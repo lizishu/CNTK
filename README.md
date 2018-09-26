@@ -29,5 +29,5 @@ vgg_test4.py: adjusted vgg19, error = 8.48%
 # GoogleNet_demo
 Inceptionv1_test1.py  
 *   max_epoch = 80, lr = AlexNet , error = 32.28%
-*   max_epoch = 160, lr = 0.01, every two epoch , lr = lr * 0.94  
+*   max_epoch = 160, lr = 0.01, every two epoch , lr = lr * 0.94, error =  18.97%
               

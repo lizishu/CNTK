@@ -1,4 +1,5 @@
 
+
 # CNTK
 learning CNTK  
 
@@ -23,4 +24,7 @@ vgg_test3.py: adjusted vgg16
 *   max_epoch = 80, with batchnormalization, error = 8.83%
 
 vgg_test4.py: adjusted vgg19, error = 8.48%  
+
+# GoogleNet_demo
+Inceptionv1_test1.py : refined Inceptionv1, error = 32.28%
               

@@ -22,7 +22,7 @@ vgg_test3.py: adjusted vgg16
 *   max_epoch = 40, without batchnormalization, error = 27.93% 
 *   max_epoch = 80, with batchnormalization, error = 8.83%
 
-vgg_test4.py: adjusted vgg19, error = 8.48%  
+vgg_test4.py: adjusted vgg19, with batchnormalization, error = 8.48%  
 
 # GoogleNet_demo
 ## InceptionV1

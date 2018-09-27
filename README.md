@@ -1,6 +1,4 @@
 
-
-
 # CNTK
 learning CNTK  
 
@@ -27,7 +25,10 @@ vgg_test3.py: adjusted vgg16
 vgg_test4.py: adjusted vgg19, error = 8.48%  
 
 # GoogleNet_demo
+## InceptionV1
 Inceptionv1_test1.py  
 *   max_epoch = 80, lr = AlexNet , error = 32.28%
 *   max_epoch = 160, lr = 0.01, every two epoch , lr = lr * 0.94, error =  18.97%
               
+## BN_Inception
+BN_Inception_test1.py ：add an inception block after 4b , error = 5.86%

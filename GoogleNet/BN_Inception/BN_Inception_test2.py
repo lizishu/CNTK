@@ -82,7 +82,7 @@ def bn_inception_cifar_model(input, labelDim, bnTimeConst):
     conv2b = conv_bn_relu_layer(conv2a, 128, (3,3), (1,1), True, bnTimeConst)
     
     # Inception Blocks
-    # 32 x 32 x 64
+    # 32 x 32 x 128
     inception3a = inception_block_with_avgpool(conv2b, 32, 32, 32, 32, 48, 16, bnTimeConst)
     # 32 x 32 x 128
     inception3b = inception_block_pass_through(inception3a, 0, 64, 80, 32, 48, 0, bnTimeConst) 

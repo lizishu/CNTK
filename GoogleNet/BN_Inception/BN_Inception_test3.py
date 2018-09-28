@@ -87,8 +87,6 @@ def bn_inception_cifar_model(input, labelDim, bnTimeConst):
     inception3a = inception_block_with_avgpool(conv2b, 32, 32, 32, 32, 48, 16, bnTimeConst)
     # 32 x 32 x 64
     inception3b = inception_block_with_avgpool(inception3a, 32, 32, 32, 32, 48, 16, bnTimeConst)
-    # 32 x 32 x 128
-    inception3c = inception_block_pass_through(inception3b, 0, 64, 80, 32, 48, 0, bnTimeConst)
     # 16 x 16 x 256
     inception4a = inception_block_with_avgpool(inception3b, 96, 48, 64, 48, 64, 64, bnTimeConst) 
     # 16 x 16 x 288

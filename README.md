@@ -1,4 +1,3 @@
-
 # CNTK
 learning CNTK  
 
@@ -29,7 +28,10 @@ vgg_test4.py: adjusted vgg19, with batchnormalization, error = 8.48%
 Inceptionv1_test1.py  
 *   max_epoch = 80, lr = AlexNet , error = 32.28%
 *   max_epoch = 160, lr = 0.01, every two epoch , lr = lr * 0.94, error =  18.97%
-              
+
+## InceptionV2
+Inceptionv2_test1.py : adjusted InceptionV2, error = 20.54%  
+ 
 ## BN_Inception
 BN_Inception_test1.py ：add an inception block after 4b , error = 5.86%  
 BN_Inception_test2.py : change some parameters, error = 5.58%

@@ -31,5 +31,5 @@ Inceptionv1_test1.py
 *   max_epoch = 160, lr = 0.01, every two epoch , lr = lr * 0.94, error =  18.97%
               
 ## BN_Inception
-BN_Inception_test1.py ：add an inception block after 4b , error = 5.86%
+BN_Inception_test1.py ：add an inception block after 4b , error = 5.86%  
 BN_Inception_test2.py : change some parameters, error = 5.58%

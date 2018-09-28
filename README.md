@@ -35,4 +35,4 @@ Inceptionv2_test1.py : adjusted InceptionV2, error = 20.54%
 ## BN_Inception
 BN_Inception_test1.py ：add an inception block after 4b , error = 5.86%  
 BN_Inception_test2.py : change some parameters, error = 5.58%  
-BN_Inception_test3.py : add a 3x3 conv, an Inception Block after 3a, slower, error = 11.52%  
+BN_Inception_test3.py : add a 3x3 conv, slower, error = 11.52%  

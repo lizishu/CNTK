@@ -99,7 +99,6 @@ def bn_inception_cifar_model(input, labelDim, bnTimeConst):
     # 8 x 8 x 512
     pool1 = AveragePooling(filter_shape=(8,8))(inception5a)
 
-    drop = Dropout(0.5)(pool1)
 
     # 1 x 1 x 512
     z = Dense(labelDim, init=he_normal())(pool1)

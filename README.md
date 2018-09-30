@@ -1,5 +1,4 @@
 
-
 # CNTK
 learning CNTK  
 
@@ -59,3 +58,9 @@ resnet_test3.py, exclusive gating connections
 
 resnet_test4.py, shortcut-only connections  
 *   resnet20, error = 8.68%, model size = 1M  
+
+resnet_test5.py, conv short cut  
+*   resnet20, error = 8.97%, model size = 1M  
+
+resnet_test6.py, dropout shortcut  
+*   resnet20, error = 10.16%, model size = 1M  

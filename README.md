@@ -1,4 +1,5 @@
 
+
 # CNTK
 learning CNTK  
 
@@ -49,3 +50,6 @@ resnet_test1.py, original shortcut connections
 *   resnet20, error = 8.60%, model size = 1M  
 *   resnet110, error = 6.50%, model size = 7M  
 *   failed to train resnet160  
+
+resnet_test2.py ,constant scaling connections
+*   resnet20, error = 8.86%, model size = 1M  

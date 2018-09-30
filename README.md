@@ -1,5 +1,4 @@
 
-
 # CNTK
 learning CNTK  
 
@@ -46,7 +45,7 @@ BN_Inception_test4.py ：change 3x3 filters numbers, error = 18.01%
 BN_Inception_test5.py : try to form a structure like vgg, no effect, error = 17.00%  
 
 # ResNet
-resnet_test1.py
+resnet_test1.py, original shortcut connections  
 *   resnet20, error = 8.60%, model size = 1M  
 *   resnet110, error = 6.50%, model size = 7M  
 *   failed to train resnet160  

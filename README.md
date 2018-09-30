@@ -51,5 +51,11 @@ resnet_test1.py, original shortcut connections
 *   resnet110, error = 6.50%, model size = 7M  
 *   failed to train resnet160  
 
-resnet_test2.py ,constant scaling connections
+resnet_test2.py, constant scaling connections
 *   resnet20, error = 8.86%, model size = 1M  
+
+resnet_test3.py, exclusive gating connections  
+*   resnet20, error = 8.34%, model size = 1M  
+
+resnet_test4.py, shortcut-only connections  
+*   resnet20, error = 8.68%, model size = 1M  

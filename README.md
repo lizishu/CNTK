@@ -55,9 +55,11 @@ resnet_test2.py, constant scaling connections
 
 resnet_test3.py, exclusive gating connections  
 *   resnet20, error = 8.34%, model size = 1M  
+*   resnet110, fail  
 
 resnet_test4.py, shortcut-only connections  
 *   resnet20, error = 8.68%, model size = 1M  
+*   resnet110, error = 15.42%  
 
 resnet_test5.py, conv short cut  
 *   resnet20, error = 8.97%, model size = 1M  

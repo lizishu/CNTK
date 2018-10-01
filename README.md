@@ -66,3 +66,6 @@ resnet_test5.py, conv short cut
 
 resnet_test6.py, dropout shortcut  
 *   resnet20, error = 10.16%, model size = 1M  
+
+# MobileNet
+mobilenet_test1.py : adjusted mobilenet, error = 22.26%, model size = 1.2M  

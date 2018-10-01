@@ -3,9 +3,7 @@ from cntk.initializer import he_normal, normal
 from cntk.layers import AveragePooling, MaxPooling, BatchNormalization, Convolution, Dense
 from cntk.ops import element_times, relu
 
-#
-# assembly components
-#
+
 def conv_bn(input, filter_size, num_filters, strides=(1, 1), init=he_normal(), bn_init_scale=1):
     c = Convolution(filter_size, num_filters, activation=None, init=init, pad=True, strides=strides, bias=False)(input)
     r = BatchNormalization(map_rank=1, normalization_time_constant=4096, use_cntk_engine=False, init_scale=bn_init_scale, disable_regularization=True)(c)

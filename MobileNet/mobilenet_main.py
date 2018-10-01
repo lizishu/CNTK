@@ -10,7 +10,7 @@ from cntk.io import MinibatchSource, ImageDeserializer, StreamDef, StreamDefs
 from cntk.learners import momentum_sgd, learning_parameter_schedule_per_sample, momentum_schedule
 from cntk.debugging import *
 from cntk.logging import *
-from resnet_test3 import *
+from mobilenet_test1 import *
 import cntk.io.transforms as xforms
 
 # Paths relative to current python file.
@@ -67,8 +67,8 @@ def train_and_evaluate(reader_train, reader_test, epoch_size, max_epochs, profil
         graph_input = input_var
         graph_label = label_var
     
-    z = create_cifar10_model(graph_input, 3, num_classes)
-    lr_per_sample          = [0.00015625]*20 + [0.00046875]*20 + [0.00015625]*20 + [0.000046875]*10 + [0.000015625]
+    z = create_cifar10_model(graph_input, 3,num_classes)
+    lr_per_sample = [0.00015625]*20 + [0.00046875]*20 + [0.00015625]*20 + [0.000046875]*20 + [0.000015625]
 
     ce = cross_entropy_with_softmax(z, graph_label)
     pe = classification_error(z, graph_label)

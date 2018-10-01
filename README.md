@@ -72,4 +72,6 @@ mobilenet_test1.py : adjusted mobilenet, error = 69.66%, model size = 0.1M
 mobilenet_test2.py : adjusted mobilenet, error = 66.40%, model size = 0.1M  
 mobilnet_test3.py : change some parameters, error = 70.53%  
 
-UPD 2018.10.1 It seems to have some mistakes.
+UPD 2018.10.1 It seems to have some mistakes.  
+UPD 2018.10.1 The code is wrong.  
+

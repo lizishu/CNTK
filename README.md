@@ -74,4 +74,7 @@ mobilnet_test3.py : change some parameters, error = 70.53%
 
 UPD 2018.10.1 It seems to have some mistakes.  
 UPD 2018.10.1 The code is wrong.  
+UPD 2018.10.2  
+mobilenet_test4.py : modified the depwise convolution, error = 61.84%  
+It still seems to have bug.  
 

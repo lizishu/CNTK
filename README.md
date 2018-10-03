@@ -38,6 +38,9 @@ Inceptionv3_test1.py : adjusted InceptionV3, error = 7.55%， model size = 63M
 Inceptionv3_test3.py : changed some parameters, error = 7.37%, model size = 8M  
 ## InceptionV4
 Inceptionv4_test1.py : adjusted InceptionV4, error = 27.13%, model size = 15M  
+## Inception_ResNet_v1 
+Inception_resNet_v1_test1.py : error = 17.94%, model size = 26M  
+
 
 ## BN_Inception
 BN_Inception_test1.py ：add an inception block after 4b , error = 5.86%  

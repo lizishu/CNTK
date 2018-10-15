@@ -41,7 +41,7 @@ Inceptionv4_test1.py : adjusted InceptionV4, error = 27.13%, model size = 15M
 ## Inception_ResNet_v1 
 Inception_resNet_v1_test1.py : error = 17.94%, model size = 26M  
 ## Inception_ResNet_v2 
-Inception_ResNet_v2_test1.py :  
+Inception_ResNet_v2_test1.py :  error = 20.31%, model size = 18M  
 
 
 

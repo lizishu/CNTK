@@ -79,10 +79,13 @@ resnet_test6.py, dropout shortcut
 mobilenet_test1.py : adjusted mobilenet, error = 69.66%, model size = 0.1M  
 mobilenet_test2.py : adjusted mobilenet, error = 66.40%, model size = 0.1M  
 mobilnet_test3.py : change some parameters, error = 70.53%  
+mobilnet_test5.py : using group convolution , error = 11.39%， model size = 17M  
 
 UPD 2018.10.1 It seems to have some mistakes.  
 UPD 2018.10.1 The code is wrong.  
 UPD 2018.10.2  
 mobilenet_test4.py : modified the depwise convolution, error = 61.84%  
 It still seems to have bug.  
+UPD 2018.10 17
+using group convolution  
 

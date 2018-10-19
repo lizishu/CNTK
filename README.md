@@ -92,5 +92,6 @@ using group convolution
 
 # BrainScript
 ## MobileNet
-mobilenet_test1.cntk : refined mobilenet v1 for CIFAR-10 , error = 13%, model size = 6M  
+mobilenet_test1.bs : refined mobilenet v1 for CIFAR-10 , error = 13%, model size = 6M 
+mobilnet_test2.bs : changed some parameters , error = 12.3%, model size = 6.6M  
 

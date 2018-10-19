@@ -1,0 +1,47 @@
+#
+# MobileNet_test1 network define
+# 
+#
+
+
+DwConvLayer {inChannels, outChannels, strideDepthwise, bnTimeConst} = Sequential (
+    GroupConvolutionalLayer {inChannels, inChannels, inChannels, (3:3), init="heNormal", stride = strideDepthwise, pad = true, bias=false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU :
+    ConvolutionalLayer {outChannels, (1:1), init = "heNormal", stride = 1, pad = false, bias = false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU
+)
+
+
+ConvBNLayer {num_filters, filter_size, strides=1, pad=true, bnTimeConst=4096, init=he_normal()} = Sequential (
+    ConvolutionalLayer {num_filters, (3:3), init = "heNormal", stride = strides, pad = true, bias = false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU
+)
+
+mobilenet_test1(input, labelDim, bnTimeConst) = 
+{
+    # 32 x 32 x 3
+    c1 = ConvBNLayer {32, (3:3), init = "heNormal", pad = true} (input)    # 32 x 32 x 32
+    c2 = DwConvLayer {32, 64, (1:1), bnTimeConst} (c1)
+    # 32 x 32 x 64
+    c3 = DwConvLayer {64, 64, (1:1), bnTimeConst} (c2)    # 32 x 32 x 64
+    d1 = DwConvLayer {64, 128, (2:2), bnTimeConst} (c3)
+    # 16 x 16 x 128
+    d2 = DwConvLayer {128, 128, (1:1), bnTimeConst} (d1)    # 16 x 16 x 128
+    e1 = DwConvLayer {128, 512, (2:2), bnTimeConst} (d2)
+    
+    # 8 x 8 x 256
+    f1 = DwConvLayer {512, 512, (1:1), bnTimeConst} (e1)
+    f2 = DwConvLayer {512, 512, (1:1), bnTimeConst} (f1)
+    f3 = DwConvLayer {512, 512, (1:1), bnTimeConst} (f2)
+    f4 = DwConvLayer {512, 512, (1:1), bnTimeConst} (f3)
+    f5 = DwConvLayer {512, 512, (1:1), bnTimeConst} (f4)    
+
+    pool1 = AveragePoolingLayer {(8:8)} (f5)    
+    g1 = DenseLayer {512, activation = ReLU, init = "heNormal"} (pool1)    
+    z = LinearLayer {labelDim, init = "heNormal"} (g1)
+    
+}
+

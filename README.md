@@ -24,6 +24,7 @@ vgg_test3.py: adjusted vgg16
 
 vgg_test4.py: adjusted vgg19, with batchnormalization, error = 8.48%  
 
+
 # GoogleNet_demo
 ## InceptionV1
 Inceptionv1_test1.py  
@@ -88,4 +89,8 @@ mobilenet_test4.py : modified the depwise convolution, error = 61.84%
 It still seems to have bug.  
 UPD 2018.10 17
 using group convolution  
+
+# BrainScript
+## MobileNet
+mobilenet_test1.cntk : refined mobilenet v1 for CIFAR-10 , error = 13%, model size = 6M  
 

@@ -1,0 +1,48 @@
+#
+# MobileNet_test1 network define
+# 
+#
+
+
+DwConvLayer {inChannels, outChannels, strideDepthwise, bnTimeConst} = Sequential (
+    GroupConvolutionalLayer {inChannels, inChannels, inChannels, (3:3), init="heNormal", stride = strideDepthwise, pad = true, bias=false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU :
+    ConvolutionalLayer {outChannels, (1:1), init = "heNormal", stride = 1, pad = false, bias = false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU
+)
+
+
+mobilenet_test1(input, labelDim, bnTimeConst) = 
+{
+    # 32 x 32 x 3
+    c1 = ConvolutionalLayer {32, (3:3), init = "heNormal", stride = 1, pad = true, bias = false} (input)
+
+    # 32 x 32 x 32
+    d1 = DwConvLayer {32, 64, (1:1), bnTimeConst} (c1)
+
+    # 32 x 32 x 64
+    d2 = DwConvLayer {64, 128, (1:1), bnTimeConst} (d1)
+
+    # 32 x 32 x 128
+    d3 = DwConvLayer {128, 256, (2:2), bnTimeConst} (d2)
+
+    # 16 x 16 x 256
+    d4 = DwConvLayer {256, 256, (1:1), bnTimeConst} (d3)
+
+    # 16 x 16 x 256
+    d5 = DwConvLayer {256, 512, (2:2), bnTimeConst} (d4)
+
+    # 8 x 8 x 512
+    e1 = DwConvLayer {512, 512, (1:1), bnTimeConst} (d5)
+    e2 = DwConvLayer {512, 512, (1:1), bnTimeConst} (e1)
+    e3 = DwConvLayer {512, 512, (1:1), bnTimeConst} (e2)
+    e4 = DwConvLayer {512, 512, (1:1), bnTimeConst} (e3)
+    e5 = DwConvLayer {512, 512, (1:1), bnTimeConst} (e4)
+
+    pool1 = AveragePoolingLayer {(8:8)} (e5)
+
+    z = LinearLayer {labelDim, init = 'heNormal'} (pool1)
+
+}

@@ -26,38 +26,6 @@ NLayerStack {n, c} = Sequential (array[0..n-1] (c))
 DwConvLayerStack {n, inChannels, outChannels, strideDw, bnTimeConst} = NLayerStack {n, i => DwConvLayer {inChannels, outChannels, strideDw, bnTimeConst}}
 
 
-mobilenet_test_mle(input, labelDim, bnTimeConst) = 
-{
-    # 224 x 224 x 3
-    c1 = ConvBNLayer {32, (3:3), init = "heNormal", pad = True} (input)
-    # 112 x 112 x 32
-    c2 = DwConvLayer {32, 64, 1, bnTimeConst} (c1)
-    # 112 x 112 x 64
-    c3 = DwConvLayer {64, 128, 2, bnTimeConst} (c2)
-    # 56 x 56 x 128
-    c4 = DwConvLayer {128, 128, 1, bnTimeConst} (c3)
-    # 56 x 56 x 128
-    c5 = DwConvLayer {128, 256, 2, bnTimeConst} (c4)
-    # 28 x 28 x 256
-    c6 = DwConvLayer {256, 256, 1, bnTimeConst} (c5)
-    # 28 x 28 x 256
-    c7 = DwConvLayer {256, 512, 2, bnTimeConst} (c6)
-
-    # 14 x 14 x 512 stack
-    d = DwConvLayerStack {5, 512, 512, 1, bnTimeConst} (c7)
-
-    # 14 x 14 x 512
-    e1 = DwConvLayer {512, 1024, 2, bnTimeConst} (d)
-    # 7 x 7 x 1024
-    e2 = DwConvLayer {1024, 1024, 1, bnTimeConst} (e1)
-
-    pool1 = AveragePoolingLayer {(7 : 7), stride = 1} (e2)
-
-    # 1 x 1 x 1024
-    z = LinearLayer {labelDim, init = "heNormal"} (pool1)
-
-}
-
 mobilenet_test3(input, labelDim, bnTimeConst) = Sequential(
     ConvBNLayer {32, (3:3), strides = 2, pad = true} :
 

@@ -1,0 +1,120 @@
+#
+# MobileNet_test3 network define
+# for resize CIFAR-10 224 x 224
+# 
+#
+
+DwConvLayer {inChannels, outChannels, strideDepthwise, bnTimeConst} = Sequential (
+    GroupConvolutionalLayer {inChannels, inChannels, inChannels, (3:3), init="heNormal", stride = strideDepthwise, pad = true, bias=false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU :
+    ConvolutionalLayer {outChannels, (1:1), init = "heNormal", stride = 1, pad = false, bias = false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU
+)
+
+
+ConvBNLayerReLu {num_filters, filter_size, strides=1, pad=true, bnTimeConst=4096, init=he_normal()} = Sequential (
+    ConvolutionalLayer {num_filters, (3:3), init = "heNormal", stride = strides, pad = true, bias = false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1} :
+    ReLU
+)
+
+
+ConvBNLayerLinear {num_filters, filter_size, strides=1, pad=true, bnTimeConst=4096, init=he_normal()} = Sequential (
+    ConvolutionalLayer {num_filters, (3:3), init = "heNormal", stride = strides, pad = true, bias = false} :
+    BatchNormalizationLayer {spatialRank = 2, normalizationTimeConstant = bnTimeConst, useCntkEngine = false, initialScale = 1}
+)
+
+
+MobileNetBasic {inChannels, OutChannels, bnTimeConst, expansion_rate} = 
+{
+    hidden_channel = inChannels * expansion_rate
+    equal_flag = OutChannels - inChannels
+    apply(x) = 
+    {
+        b = Sequential
+        (
+            ConvBNLayerReLu {hidden_channel, (1:1)} :
+            DwConvLayer {hidden_channel, hidden_channel, 1, bnTimeConst} :
+            ConvBNLayerLinear {OutChannels, (1:1)}
+        ) (x)
+
+        
+        r = 
+        if equal_flag == 0
+        then Plus(b, x)
+        else b
+
+
+    }.r
+
+}.apply
+
+MobileNetBasicInc {inChannels, OutChannels, bnTimeConst, expansion_rate} = 
+{
+    hidden_channel = inChannels * expansion_rate
+    apply(x) = 
+    {
+        b = Sequential
+        (
+            ConvBNLayerReLu {hidden_channel, (1:1)} :
+            DwConvLayer {hidden_channel, hidden_channel, 2, bnTimeConst} :
+            ConvBNLayerLinear {OutChannels, (1:1)}
+        ) (x)
+
+        r = b
+    }.r
+
+}.apply
+
+
+
+NLayerStack {n, c} = Sequential (array[0..n-1] (c))
+MobileNetBasicStack {n, inChannels, outChannels, bnTimeConst, expansion_rate} = NLayerStack {n, i => MobileNetBasic {inChannels, outChannels, bnTimeConst, expansion_rate}}
+
+MobileNetBasicIncStack {n, inChannels, outChannels, bnTimeConst, expansion_rate} = NLayerStack {n, i => MobileNetBasicInc {inChannels, outChannels, bnTimeConst, expansion_rate}}
+
+
+mobilenet_test4(input, labelDim, bnTimeConst) = Sequential(
+    # 224 x 224 x 3
+    ConvBNLayerReLu {32, (3:3), strides = 2, pad = true} :
+
+    # 112 x 112 x 32
+    MobileNetBasic {32, 16, bnTimeConst, 1} :
+
+    # 112 x 112 x 16
+    MobileNetBasicInc {16, 24, bnTimeConst, 6} :
+    MobileNetBasic {24, 24, bnTimeConst, 6} :
+
+    # 56 x 56 x 24
+    MobileNetBasicInc {24, 32, bnTimeConst, 6} :
+    MobileNetBasicStack {2, 32, 32, bnTimeConst, 6}:
+
+    # 28 x 28 x 32
+    MobileNetBasicInc {32, 64, bnTimeConst, 6} :
+    MobileNetBasicStack {3, 64, 64, bnTimeConst, 6}:
+
+    # 14 x 14 x 64
+    MobileNetBasic {64, 96, bnTimeConst, 6} :
+    MobileNetBasicStack {2, 96, 96, bnTimeConst, 6} :
+
+    # 14 x 14 x 96
+    MobileNetBasicInc {96, 160, bnTimeConst, 6} :
+    MobileNetBasicStack {2, 160, 160, bnTimeConst, 6} :
+
+    # 7 x 7 x 160
+    MobileNetBasic {160, 320, bnTimeConst, 6} :
+
+    # 7 x 7 x 320
+    ConvBNLayerReLu{1280, (1:1), strides = 1, pad = true} :
+
+    # 7 x 7 x 1280
+    AveragePoolingLayer {(7 : 7), stride = 1} :
+
+    # 1 x 1 x 1280
+
+    LinearLayer {labelDim, init = 'normal'}       
+
+)
+

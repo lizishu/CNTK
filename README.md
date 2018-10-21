@@ -91,7 +91,10 @@ UPD 2018.10 17
 using group convolution  
 
 # BrainScript
-## MobileNet
+## MobileNetV1  
 mobilenet_test1.bs : refined mobilenet v1 for CIFAR-10 , error = 13%, model size = 6M 
 mobilenet_test2.bs : changed some parameters , error = 12.3%, model size = 6.6M  
 mobilenet_test3.bs : for resized CIFAR-10 224 x 224, error = 10.67%, model size = 12M  
+
+## MobileNetV2  
+mobilenetv2_test1.bs : for resized CIFAR-10 224 x 224 , error = 12.38%, model size = 91M  

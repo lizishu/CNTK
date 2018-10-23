@@ -80,7 +80,6 @@ Train = {
             learnRateDecreaseFactor = 0.94
             loadBestModel = false
         ]
-
         ParallelTrain = [
             parallelizationMethod = "DataParallelSGD"
             distributedMBReading = "true"
@@ -146,6 +145,6 @@ Eval = {
            sideRatio = 0.875
            interpolations = "cubic"
        ]
-       labels = { labelDim = $NumLabels$ }
+       labels = [ labelDim = $NumLabels$ ]
     ]
 }

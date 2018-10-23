@@ -1,0 +1,151 @@
+#
+# MobileNetV1 network components
+# Details are in https://arxiv.org/pdf/1704.04861.pdf
+#
+
+command = Train:Eval
+
+deviceId = "Auto"
+precision = "float"
+traceLevel = 1
+parallelTrain = true
+numMBsToShowResult = 100
+
+RootDir     = "."
+ConfigDir   = "$RootDir$"
+ImageNetDir = "$ConfigDir$"
+DataDir     = "$RootDir$"
+OutputDir   = "$RootDir$/Output"
+ModelDir    = "$OutputDir$/Model"
+stderr      = "$OutputDir$/MobileNetV1"
+modelPath   = "$ModelDir$/MobileNetV1"
+
+ImageH    = 224
+ImageW    = 224
+ImageC    = 3
+NumLabels = 1000
+
+Train = {
+    action = "train"
+
+    BrainScriptNetworkBuilder = {
+        include "$ConfigDir$/mobilenetv1.bs"
+
+        imageShape  = $ImageH$:$ImageW$:$ImageC$
+        labelDim    = $NumLabels$
+        bnTimeConst = 4096
+
+        # inputs
+        features = Input {imageShape}
+        labels   = Input {labelDim}
+
+        # apply model to features
+        model    = mobilenet(features, labelDim, bnTimeConst)
+        z        = model(features)
+
+        # loss and error computation
+        ce       = CrossEntropyWithSoftmax (labels, z)
+        errs     = ClassificationError     (labels, z)
+        top5Errs = ClassificationError     (labels, z, topN=5)
+
+        # declare special nodes
+        featureNodes    = (features)
+        labelNodes      = (labels)
+        criterionNodes  = (ce)
+        evaluationNodes = (errs : top5Errs)
+        outputNodes     = (z)
+    }
+
+    
+    #
+    # Reference : https://github.com/Microsoft/CNTK/blob/master/Examples/Image/Classification/ResNet/BrainScript/ResNet101_ImageNet1K.cntk
+    # Reference : https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet_v1_train.py
+    SGD = {
+        epochSize = 0
+        minibatchSize = 64
+        maxEpochs = 90
+        learningRatesPerMB = 0.045 * 2 : 0.0423
+        momentumPerMB = 0.9
+        useNAG = true  # use Nesterov Momentum
+        gradUpdateType = "None"
+        L2RegWeight = 0.0001
+        numMBsToShowResult = 100
+        dropoutRate = 0
+        disableRegInBatchNormalization = true
+
+        autoAdjust = [
+            autoAdjustLR = "adjustAfterEpoch"
+            reduceLearnRateIfImproveLessThan = 1000
+            learnRateAdjustInterval = 2
+            learnRateDecreaseFactor = 0.94
+            loadBestModel = false
+        ]
+
+        ParallelTrain = [
+            parallelizationMethod = "DataParallelSGD"
+            distributedMBReading = "true"
+            parallelizationStartEpoch = 1
+            DataParallelSGD = [
+                gradientBits = 32
+            ]
+        ]
+    }
+
+    reader = {
+        readerType = "ImageReader"
+        file = "$DataDir$/train_map.txt"
+        randomize = "Auto"
+        features = {
+            width = 224
+            height = 224
+            channels = 3
+            cropType = "RandomArea"
+            jitterType = "UniRatio"
+            areaRatio = 0.08 : 1.0
+            aspectRatio = 0.75 : 1.3333
+            interpolations = "cubic"
+            brightnessRadius = 0.4
+            contrasRadius = 0.4
+            saturationRadius = 0.4
+            hflip = true
+        }
+        labels = [ labelDim = $NumLabels$ ]
+    }
+
+    cvReader = {
+        readerType = "ImageReader"
+        file = "$DataDir$/val_map.txt"
+        randomize = "None"
+        features = [
+            width = 224
+            height = 224
+            channels = 3
+            cropType = "Center"
+            sideRatio = 0.875
+            interpolations = "cubic"
+        ]
+        labels = [ labelDim = $NumLabels$ ]
+    }
+}
+
+Eval = {
+    action = "test"
+    modelPath = $modelPath$
+    minibatchSize = 200
+    evalNodeNames = errs:top5Errs
+    
+    reader = [
+        readerType = "ImageReader"
+        file = "$DataDir$/val_map.txt"
+        randomize = "None"
+       features = [
+           width = 224
+           height = 224
+           channels = 3
+           cropType = "Center"
+           sideRatio = 0.875
+           interpolations = "cubic"
+       ]
+       labels = { labelDim = $NumLabels$ }
+    ]
+}

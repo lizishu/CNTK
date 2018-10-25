@@ -48,6 +48,7 @@ Inception_ResNet_v2_test1.py :  error = 20.31%, model size = 18M
 
 ## BN_Inception
 BN_Inception_test1.py ：add an inception block after 4b , error = 5.86%  
+
 BN_Inception_test2.py : change some parameters, error = 5.58%  
 BN_Inception_test3.py : add a 3x3 conv, slower, error = 11.52%  
 BN_Inception_test4.py ：change 3x3 filters numbers, error = 18.01%  
@@ -89,6 +90,9 @@ mobilenet_test4.py : modified the depwise convolution, error = 61.84%
 It still seems to have bug.  
 UPD 2018.10 17
 using group convolution  
+
+# MobileNet V2
+mobilenetv2_test1.bs & mobilenetv2_test1.cntk : resize CIFAR 224 x 224 , error = 12.23% , model size = 15M  
 
 # BrainScript
 ## MobileNetV1  

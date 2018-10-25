@@ -1,0 +1,104 @@
+# ConvNet applied on CIFAR-10 dataset, with no data augmentation.
+
+command = TrainConvNet:Eval
+
+precision = "float"; traceLevel = 1 ; deviceId = 0
+
+rootDir = "../../.." ; 
+dataDir = ".";
+outputDir = "./Output" ;
+
+modelPath = "$outputDir$/Models/mobilenetv2_test17"
+#stderr = "$outputDir$/ConvNet_CIFAR10_bs_out"
+
+TrainConvNet = {
+    action = "train"
+
+    BrainScriptNetworkBuilder = {
+        include "mobilenet_test4.bs"
+        imageShape = 224:224:3
+        labelDim = 10
+
+        featMean = 128
+        featScale = 1/256
+        Normalize{m,f} = x => f .* (x - m)
+
+        # inputs
+        features = Input {imageShape}
+        labels   = Input {labelDim}
+        model = mobilenet_test4(features, labelDim, 4096)
+
+        # apply model to features
+        z = model(features)
+
+        # connect to system
+        ce       = CrossEntropyWithSoftmax     (labels, z)
+        errs     = ClassificationError         (labels, z)
+        top5Errs = ClassificationError         (labels, z, topN=5)  # only used in Eval action
+
+        featureNodes    = (features)
+        labelNodes      = (labels)
+        criterionNodes  = (ce)
+        evaluationNodes = (errs)  # top5Errs only used in Eval
+        outputNodes     = (z)
+    }
+
+    SGD = [
+        epochSize = 0
+        minibatchSize = 64
+
+        learningRatesPerSample = 0.015*2 : 0.0147
+        momentumAsTimeConstant = 0*20:607.44
+        maxEpochs = 100
+        L2RegWeight = 0.00004
+        dropoutRate = 0*5:0.5
+
+        numMBsToShowResult = 100
+
+        autoAdjust = [
+            autoAdjustLR = "adjustAfterEpoch"
+            reduceLearnRateIfImproveLessThan = 1000
+            learnRateAdjustInterval = 1
+            learnRateDecreaseFactor = 0.98
+            loadBestModel = false
+        ]
+    ]
+
+    reader = {
+        verbosity = 0; randomize = false
+        deserializers = ({
+            type = "ImageDeserializer"; module = "ImageReader"
+            file = "$DataDir$/train_map.txt"
+            input = {
+                features = { transforms = (
+                    {type = "Crop"; cropType = "RandomArea"; sideRatio = 0.8:1.0;}:
+                    {type = "Scale"; width = 224; height = 224; channels = 3; interpolations = "linear"}:
+                    {type = "Transpose"}
+                )}
+                labels = { labelDim = 10}
+            }
+        })
+    }
+}
+
+# Eval action
+Eval = {
+    action = "eval"
+    minibatchSize = 64
+    evalNodeNames = errs:top5Errs  # also test top-5 error rate
+
+     reader = {
+        verbosity = 0; randomize = false
+        deserializers = ({
+            type = "ImageDeserializer"; module = "ImageReader"
+            file = "$DataDir$/test_map.txt"
+            input = {
+                features = { transforms = (
+                    {type = "Scale"; width = 224; height = 224; channels = 3; interpolations = "linear"}:
+                    {type = "Transpose"}
+                )}
+                labels = { labelDim = 10}
+            }
+        })
+    }
+}
